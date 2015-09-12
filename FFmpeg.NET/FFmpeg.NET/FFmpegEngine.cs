@@ -111,11 +111,6 @@ namespace FFmpeg.NET
             }
         }
 
-        public static void Decompress(FileInfo fileToDecompress)
-        {
-
-        }
-
         private void KillProcesses()
         {
             var processes = Process.GetProcessesByName("ffmepg.exe");
