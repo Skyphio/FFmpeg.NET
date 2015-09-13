@@ -7,19 +7,37 @@ using System.Threading;
 
 namespace FFmpeg.NET
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class FFmpegEngine : IDisposable
     {
+        /// <summary>
+        /// The directory containing the FFmpeg application.
+        /// </summary>
         public string FFmpegDirectoryPath
         {
             get { return Path.GetDirectoryName(FFmpegFilePath); }
         }
 
+        /// <summary>
+        /// The path to the FFmpeg application.
+        /// </summary>
         public string FFmpegFilePath { get; private set; }
 
+        /// <summary>
+        /// The <see cref="Mutex"/> class that handles synchronizing requests for the FFmpeg application.
+        /// </summary>
         public Mutex FFmpegMutex { get; private set; }
 
+        /// <summary>
+        /// The <see cref="Process"/> class that manages running the FFmpeg application.
+        /// </summary>
         public Process FFmpegProcess { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FFmpegEngine"/> class and decompressess FFmpeg into a temporary folder for use.
+        /// </summary>
         public FFmpegEngine()
         {
             FFmpegFilePath = Path.Combine(Path.GetTempPath(), "FFmpeg.NET\\ffmpeg.exe");
@@ -43,7 +61,13 @@ namespace FFmpeg.NET
                 }
         }
 
-        public void Convert(string inputPath, string outputPath, string parameters)
+        /// <summary>
+        /// Converts a video by running FFmpeg with a serialized command.
+        /// </summary>
+        /// <param name="inputPath">The path to the file to convert.</param>
+        /// <param name="outputPath">The path to the file to be created. Note: the output extension determines the output format.</param>
+        /// <param name="parameters">Additional parameters for greater control over the conversion.</param>
+        public void Convert(string inputPath, string outputPath, string parameters = "")
         {
             if (string.IsNullOrWhiteSpace(inputPath))
                 throw new ArgumentNullException("inputPath");
@@ -77,6 +101,9 @@ namespace FFmpeg.NET
             }
         }
 
+        /// <summary>
+        /// Releases all resources used by the current instance of the <see cref="FFmpegEngine"/> class.
+        /// </summary>
         public void Dispose()
         {
             FFmpegMutex.Dispose();
